@@ -1,0 +1,15 @@
+ M README.md
+ M src/pages/Auth.jsx
+?? AUTO-COMMIT-README.md
+?? CARA-MENJALANKAN.md
+?? CHECKLIST.md
+?? QUICK-START.sql
+?? SETUP-MYSQL.md
+?? auto-commit.bat
+?? auto-commit.sh
+?? run-backend.bat
+?? run-frontend.bat
+?? server/
+?? setup-backend.bat
+?? src/services/
+?? temp_files.txt
