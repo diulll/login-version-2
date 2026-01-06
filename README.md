@@ -1,4 +1,88 @@
-# React + Vite
+# BelajarReact2 - React + MySQL Authentication
+
+Aplikasi web React dengan sistem authentication menggunakan MySQL database.
+
+## 🚀 Quick Start
+
+### 1. Setup Database MySQL
+```bash
+# Jalankan SQL script di MySQL
+mysql -u root -p < QUICK-START.sql
+```
+Atau copy-paste isi file `QUICK-START.sql` ke MySQL Workbench/phpMyAdmin.
+
+### 2. Konfigurasi Backend
+```bash
+cd server
+npm install
+# Edit file .env dan sesuaikan password MySQL Anda
+```
+
+### 3. Jalankan Backend Server
+```bash
+cd server
+npm run dev
+```
+Server akan berjalan di: http://localhost:5000
+
+### 4. Jalankan Frontend React  
+```bash
+# Di terminal baru
+npm run dev
+```
+Frontend akan berjalan di: http://localhost:5173
+
+## 📚 Dokumentasi Lengkap
+
+- **Setup MySQL**: Lihat [SETUP-MYSQL.md](SETUP-MYSQL.md)
+- **API Backend**: Lihat [server/README.md](server/README.md)
+
+## ✨ Fitur
+
+- ✅ User Registration (Sign Up)
+- ✅ User Login  
+- ✅ JWT Authentication
+- ✅ Password Hashing (bcrypt)
+- ✅ Protected Routes
+- ✅ Auto Login
+- ✅ Logout
+
+## 🛠️ Tech Stack
+
+**Frontend:**
+- React 18
+- Vite
+- React Router DOM
+
+**Backend:**
+- Node.js
+- Express
+- MySQL2
+- JWT (jsonwebtoken)
+- bcrypt
+
+## 📁 Struktur Project
+
+```
+belajarReact2/
+├── server/              # Backend API
+│   ├── config/         # Database config
+│   ├── routes/         # API routes
+│   └── index.js        # Server entry
+├── src/                # Frontend React
+│   ├── pages/         # Page components
+│   ├── services/      # API services
+│   └── ...
+└── QUICK-START.sql    # Database setup
+```
+
+## 🔧 Troubleshooting
+
+Lihat [SETUP-MYSQL.md](SETUP-MYSQL.md) untuk troubleshooting lengkap.
+
+---
+
+## React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
