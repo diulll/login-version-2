@@ -98,6 +98,52 @@ export const isLoggedIn = () => {
   return !!localStorage.getItem('token');
 };
 
+// Forgot Password - Request reset code
+export const forgotPassword = async (email) => {
+  try {
+    const response = await fetch(`${API_URL}/auth/forgot-password`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email }),
+    });
+
+    const data = await response.json();
+    
+    if (!response.ok) {
+      throw new Error(data.message || 'Gagal mengirim kode reset');
+    }
+
+    return data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+// Reset Password - Verify code and set new password
+export const resetPassword = async (email, resetCode, newPassword) => {
+  try {
+    const response = await fetch(`${API_URL}/auth/reset-password`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, resetCode, newPassword }),
+    });
+
+    const data = await response.json();
+    
+    if (!response.ok) {
+      throw new Error(data.message || 'Gagal mereset password');
+    }
+
+    return data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 // Get current user
 export const getCurrentUser = () => {
   const userStr = localStorage.getItem('user');
