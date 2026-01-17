@@ -1,10 +1,11 @@
 import { useState } from 'react'
 import '../styles/Auth.css'
-import { login, signup } from '../services/api'
+import { login, signup, forgotPassword, resetPassword } from '../services/api'
 
 function Auth() {
   const [isSignUp, setIsSignUp] = useState(false)
   const [user, setUser] = useState(null)
+  const [showForgotPassword, setShowForgotPassword] = useState(false)
 
   const handleLoginSuccess = (userData) => {
     setUser(userData)
@@ -56,9 +57,13 @@ function Auth() {
               <label htmlFor="reg-log"></label>
               <div className="card-3d-wrap mx-auto">
                 <div className="card-3d-wrapper">
-                  {!isSignUp ? <LogIn onSuccess={handleLoginSuccess} /> : <SignUp onSuccess={handleLoginSuccess} />}
+                  {!isSignUp ? <LogIn onSuccess={handleLoginSuccess} onForgotPassword={() => setShowForgotPassword(true)} /> : <SignUp onSuccess={handleLoginSuccess} />}
                 </div>
               </div>
+              
+              {showForgotPassword && (
+                <ForgotPassword onClose={() => setShowForgotPassword(false)} />
+              )}
             </div>
           </div>
         </div>
@@ -67,7 +72,7 @@ function Auth() {
   )
 }
 
-function LogIn({ onSuccess }) {
+function LogIn({ onSuccess, onForgotPassword }) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
@@ -124,7 +129,7 @@ function LogIn({ onSuccess }) {
             </button>
           </form>
           <p className="mb-0 mt-4 text-center">
-            <a href="#0" className="link">Forgot your password?</a>
+            <a href="#0" className="link" onClick={(e) => { e.preventDefault(); onForgotPassword(); }}>Forgot your password?</a>
           </p>
         </div>
       </div>
@@ -201,6 +206,144 @@ function SignUp({ onSuccess }) {
             </button>
           </form>
         </div>
+      </div>
+    </div>
+  )
+}
+
+function ForgotPassword({ onClose }) {
+  const [step, setStep] = useState(1) // 1: enter email, 2: enter code & new password
+  const [email, setEmail] = useState('')
+  const [resetCode, setResetCode] = useState('')
+  const [newPassword, setNewPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+  const [error, setError] = useState('')
+  const [success, setSuccess] = useState('')
+  const [loading, setLoading] = useState(false)
+
+  const handleRequestReset = async (e) => {
+    e.preventDefault()
+    setError('')
+    setLoading(true)
+
+    try {
+      const response = await forgotPassword(email)
+      setSuccess(response.message || 'Kode reset telah dikirim ke email Anda!')
+      setStep(2)
+    } catch (err) {
+      setError(err.message || 'Gagal mengirim kode reset')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleResetPassword = async (e) => {
+    e.preventDefault()
+    setError('')
+
+    if (newPassword !== confirmPassword) {
+      setError('Password tidak cocok!')
+      return
+    }
+
+    if (newPassword.length < 6) {
+      setError('Password minimal 6 karakter!')
+      return
+    }
+
+    setLoading(true)
+
+    try {
+      const response = await resetPassword(email, resetCode, newPassword)
+      setSuccess(response.message || 'Password berhasil direset!')
+      setTimeout(() => {
+        onClose()
+      }, 2000)
+    } catch (err) {
+      setError(err.message || 'Gagal mereset password')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  return (
+    <div className="forgot-password-overlay" onClick={onClose}>
+      <div className="forgot-password-modal" onClick={(e) => e.stopPropagation()}>
+        <button className="close-btn" onClick={onClose}>&times;</button>
+        
+        <h4 className="mb-4">Forgot Password</h4>
+        
+        {error && <p className="error-message">{error}</p>}
+        {success && <p className="success-message">{success}</p>}
+        
+        {step === 1 ? (
+          <form onSubmit={handleRequestReset}>
+            <p className="description">
+              Masukkan email Anda dan kami akan mengirimkan kode untuk mereset password.
+            </p>
+            <div className="form-group">
+              <input 
+                type="email" 
+                className="form-style" 
+                placeholder="Your Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+              <i className="input-icon uil uil-at"></i>
+            </div>
+            <button type="submit" className="btn mt-4" disabled={loading}>
+              {loading ? 'Sending...' : 'Send Reset Code'}
+            </button>
+          </form>
+        ) : (
+          <form onSubmit={handleResetPassword}>
+            <p className="description">
+              Masukkan kode reset dan password baru Anda.
+            </p>
+            <div className="form-group">
+              <input 
+                type="text" 
+                className="form-style" 
+                placeholder="Reset Code"
+                value={resetCode}
+                onChange={(e) => setResetCode(e.target.value)}
+                required
+              />
+              <i className="input-icon uil uil-key-skeleton"></i>
+            </div>
+            <div className="form-group mt-2">
+              <input 
+                type="password" 
+                className="form-style" 
+                placeholder="New Password"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                required
+              />
+              <i className="input-icon uil uil-lock-alt"></i>
+            </div>
+            <div className="form-group mt-2">
+              <input 
+                type="password" 
+                className="form-style" 
+                placeholder="Confirm New Password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                required
+              />
+              <i className="input-icon uil uil-lock"></i>
+            </div>
+            <button type="submit" className="btn mt-4" disabled={loading}>
+              {loading ? 'Resetting...' : 'Reset Password'}
+            </button>
+            <p className="mt-3">
+              <a href="#0" className="link" onClick={(e) => { e.preventDefault(); setStep(1); setError(''); setSuccess(''); }}>
+                ← Kembali
+              </a>
+            </p>
+          </form>
+        )}
       </div>
     </div>
   )
