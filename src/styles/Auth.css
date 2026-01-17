@@ -269,3 +269,124 @@ h6 span{
   color: #ffeba7;
   box-shadow: 0 8px 24px 0 rgba(16,39,112,.2);
 }
+
+/* Forgot Password Modal Styles */
+.forgot-password-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.forgot-password-modal {
+  background-color: #2a2b38;
+  background-image: url('/bg.svg');
+  background-position: bottom center;
+  background-repeat: no-repeat;
+  background-size: 300%;
+  padding: 40px;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 400px;
+  position: relative;
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.forgot-password-modal h4 {
+  color: #ffeba7;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.forgot-password-modal .close-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  color: #c4c3ca;
+  font-size: 28px;
+  cursor: pointer;
+  transition: all 200ms linear;
+  line-height: 1;
+  padding: 0;
+  width: 30px;
+  height: 30px;
+}
+
+.forgot-password-modal .close-btn:hover {
+  color: #ffeba7;
+  transform: rotate(90deg);
+}
+
+.forgot-password-modal .description {
+  color: #c4c3ca;
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+.forgot-password-modal .error-message {
+  color: #ff6b6b;
+  text-align: center;
+  margin-bottom: 15px;
+  padding: 10px;
+  background-color: rgba(255, 107, 107, 0.1);
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.forgot-password-modal .success-message {
+  color: #51cf66;
+  text-align: center;
+  margin-bottom: 15px;
+  padding: 10px;
+  background-color: rgba(81, 207, 102, 0.1);
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.forgot-password-modal .btn {
+  width: 100%;
+}
+
+.forgot-password-modal .mt-3 {
+  margin-top: 15px;
+  text-align: center;
+}
+
+.forgot-password-modal .link {
+  color: #c4c3ca;
+  font-size: 14px;
+}
+
+.forgot-password-modal .link:hover {
+  color: #ffeba7;
+}
